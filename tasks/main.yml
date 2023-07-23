@@ -1,0 +1,20 @@
+---
+- name: Assert that we are not logged in as root
+  assert:
+    that:
+      - ansible_user_id != 'root'
+    fail_msg: "Podman containers are rootless, so please do not run this role as root."
+
+- name: Assert all configuration variables have been defined.
+  ansible.builtin.assert:
+    that:
+      - item.value is defined
+      - item.value != ''
+    fail_msg: "FAILED: Required configuration settings are not configured. Passwords cannot be blank."
+    quiet: true
+  no_log: true
+  with_dict: "{{ castopod_config }}"
+
+- import_tasks: setup.yml
+- import_tasks: podman.yml
+- import_tasks: systemd.yml

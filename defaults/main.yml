@@ -1,0 +1,35 @@
+---
+castopod_version: "latest" # https://docs.castopod.org/getting-started/docker.html#supported-tags
+castopod_image: docker.io/castopod/app
+castopod_name: castopod
+castopod_media_path: ./castopod
+
+castopod_ports:
+  - "{{ castopod_fpm_upstream|default(9000) }}:9000"
+
+castopod_volumes:
+  - "{{ castopod_media_path }}:/opt/castopod/public/media"
+
+# https://docs.castopod.org/getting-started/docker.html#environment-variables
+castopod_config:
+  MYSQL_ROOT_PASSWORD: ""
+  MYSQL_DATABASE: castopod
+  MYSQL_USER: castopod
+  MYSQL_PASSWORD: ""
+  CP_DATABASE_HOSTNAME: host.containers.internal
+  CP_BASEURL: https://cast.example.com
+  CP_ANALYTICS_SALT: ""
+  CP_CACHE_HANDLER: host.containers.internal
+  CP_REDIS_HOST: host.containers.internal
+
+  # https://codeigniter.com/user_guide/libraries/email.html
+  CP_EMAIL_FROM: castopod@example.com
+  CP_EMAIL_SMTP_HOST: mail.example.com
+  CP_EMAIL_SMTP_USERNAME: castopod
+  CP_EMAIL_SMTP_PASSWORD: ""
+  CP_EMAIL_SMTP_PORT: 25
+  # SMTP Encryption. Setting this to “ssl” will create a secure
+  # channel to the server using SSL and “tls” will issue a
+  # STARTTLS command to the server. Connection on port 465 should
+  # set this to blank.
+  CP_EMAIL_SMTP_CRYPTO: tls

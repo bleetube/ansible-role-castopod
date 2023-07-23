@@ -1,0 +1,24 @@
+---
+#- name: "Clone repository: v{{ castopod_version }}"
+#  ansible.builtin.git:
+#    repo: 'https://code.castopod.org/adaures/castopod.git'
+#    dest: ~/src/castopod
+#    version: "v{{ castopod_version }}"
+#  when: castopod_version != 'latest'
+#  register: git_repository
+#  tags: upgrade
+#
+#
+#- name: "Clone repository: latest"
+#  ansible.builtin.git:
+#    repo: 'https://github.com/ad-aures/castopod.git'
+#    dest: ~/src/castopod
+#    version: HEAD
+#  when: castopod_version == 'latest'
+#  register: git_repository
+#  tags: upgrade
+
+- name: Ensure Castopod media directory exists
+  ansible.builtin.file:
+    path: "{{ castopod_media_path }}"
+    state: directory

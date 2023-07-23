@@ -1,0 +1,31 @@
+---
+# https://github.com/ad-aures/castopod/blob/develop/docker/production/app/Dockerfile
+# This incomplete Dockerfile requires an npm build (or something) to be run first
+# See: https://code.castopod.org/adaures/castopod/-/issues/358
+#- name: Build image
+#  register: podman_image_output
+#  containers.podman.podman_image:
+#    name: castopod
+#    path: ~/src/castopod
+#    tag: "v{{ castopod_version }}"
+#    validate_certs: true
+#    pull: false
+#    state: build
+#    build:
+#      file: ~/src/castopod/docker/production/app/Dockerfile
+
+# https://docs.castopod.org/getting-started/docker.html#example-usage
+- name: Create container
+  containers.podman.podman_container:
+    image: "{{ castopod_image }}:{{ castopod_version }}"
+    image_strict: yes
+    recreate: yes
+    state: present
+    name: "{{ castopod_name }}"
+    env: "{{ castopod_config }}"
+    volume: "{{ castopod_volumes }}"
+    ports: "{{ castopod_ports }}"
+  register: podman_output
+
+- ansible.builtin.debug:
+    var: podman_output
