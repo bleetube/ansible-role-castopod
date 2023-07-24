@@ -18,3 +18,13 @@
 - import_tasks: setup.yml
 - import_tasks: podman.yml
 - import_tasks: systemd.yml
+
+- name: "(Workaround) Copy /var/www/castopod/public from container to host"
+  ansible.builtin.command:
+    cmd: "podman cp castopod:/var/www/castopod/public {{ castopod_web_root }}"
+  changed_when: false
+
+- name: "(Workaround) Set ownership of {{ castopod_web_root }}"
+  ansible.builtin.command:
+    cmd: "chown -R 1000:nginx {{ castopod_web_root }}"
+  become: yes

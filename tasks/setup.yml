@@ -20,5 +20,5 @@
 
 - name: Ensure Castopod media directory exists
   ansible.builtin.file:
-    path: "{{ castopod_media_path }}"
+    path: "{{ castopod_web_root }}/media"
     state: directory

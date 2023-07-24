@@ -29,3 +29,10 @@
 
 - ansible.builtin.debug:
     var: podman_output
+
+- name: Syncronize the webroot to the filesystem for nginx
+  ansible.builtin.command:
+    cmd: podman cp castopod:/var/www/castopod/public /var/compose/castopod/
+#   cmd: podman exec castopod tar cf - --exclude=media /container-directory | tar xf - -C ./local-directory
+#   creates: /var/compose/castopod/public
+  changed_when: false
